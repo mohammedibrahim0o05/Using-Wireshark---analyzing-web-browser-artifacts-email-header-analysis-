@@ -1,61 +1,58 @@
 # Using-Wireshark---analyzing-web-browser-artifacts-email-header-analysis
+
+### Name : Mohammed Ibrahim MN 
+### Reg No : 212223100034
+
 ## AIM:
 To use Wireshark to analyze web browser activities and inspect email headers from captured network traffic.
-## Architecture Diagram:
-```mermaid
-flowchart TD
-    A[User System] --> B[Web Browser]
-    A --> C[Email Client]
-    B --> D[Network Traffic]
-    C --> D
-    D --> E[Wireshark Capture Engine]
-    E --> F[Protocol Decoders HTTP SMTP IMAP POP]
-    F --> G[Browser Artifacts URLs Cookies Auth]
-    F --> H[Email Headers Source IP Server Timestamps]
-    G --> I[Findings and Reports]
-    H --> I
-```
+
 ## DESIGN STEPS:
 ### Step 1:
-- Install Wireshark and ensure correct network adapter selection.
-- Enable packet capturing for your active interface (Wi-Fi/Ethernet).
+Launch Wireshark and start capturing traffic on the appropriate network interface.
 
 ### Step 2:
-**Web Browser Artifact Analysis**
-- Open a browser and visit websites with login forms (use dummy credentials).
-- In Wireshark, filter traffic with:
-    - ```http``` for normal HTTP requests
-    - ```http.cookie``` for cookies
-    - ```http.authbasic``` for basic authentication
-- Identify:
-    - URLs visited
-    - GET/POST requests
-    - Cookies & session IDs
-    - Credentials (if plaintext HTTP is used)
+Use filters like http, dns, or tcp.port == 80 to monitor web browser artifacts such as visited URLs, cookies, and user-agent strings.
+
 ### Step 3:
-- Capture email traffic by sending/receiving emails (dummy mail server or provided PCAP).
-- Use filters:
-    - ```smtp``` (Simple Mail Transfer Protocol)
-    - ```pop``` / ```imap``` (for received mail)
-- Inspect email headers:
-    - Source IP
-    - Mail server hostname
-    - Timestamps
-    - Possible forged headers
+Apply filters like smtp, pop, or imap to locate and analyze email header details (e.g., sender, receiver, subject) from email communications.
+
 ## PROGRAM:
-```mermaid
-flowchart TD
-    A[Start Wireshark Capture] --> B[Generate Traffic: Web Browsing & Emails]
-    B --> C[Apply Protocol Filters: HTTP/SMTP/IMAP/POP]
-    C --> D[Extract Browser Artifacts: URLs, Cookies, Credentials]
-    C --> E[Analyze Email Headers: Source, Server, Metadata]
-    D --> F[Save Findings]
-    E --> F[Save Findings]
-    F --> G[Generate Digital Forensic Report]
-```
+Wireshark Web and Email Traffic Filtering Steps
 
 ## OUTPUT:
-Captured Web Activity and Email Header Information
+# A. Capturing Traffic in Wireshark
+
+1.Open Wireshark and start capturing on the active interface (Wi- Fi/Ethernet).
+
+2.Perform activities like opening a website or sending an email through a client (e.g., Gmail via browser or Thunderbird).
+
+3.Stop the capture once done.
+![435752115-04f9e42a-15ca-4cc2-a81c-97b889bb176b](https://github.com/user-attachments/assets/6a654494-4cde-405f-a45b-9505ea0e6ea5)
+Analyze DNS Queries: o Filter: dns
+
+Reveal domains the browser tried to resolve.
+![435752556-eb10207d-d377-448d-beef-9985f73ae7ff](https://github.com/user-attachments/assets/0650a35c-dd56-4231-9800-7b09045f2588)
+Email Header Analysis
+
+# Apply relevant filters:
+ For POP3: tcp.port == 110
+
+For SMTP: tcp.port == 25 or 587
+
+ For IMAP: tcp.port == 143 or 993
+
+# Locate email data:
+ Look for SMTP packets to see sender/receiver email addresses.
+
+ Use "Follow TCP Stream" to view the full email headers and body if unencrypted.
+
+# Extract Email Header Fields:
+
+ Analyze From, To, Subject, Date, Message-ID, and relay servers used in sending the email.
+ ![435754056-0bd101fe-2793-4eb1-b064-3ccaffd3ee3d](https://github.com/user-attachments/assets/c0c6d519-cc46-4433-88af-c8f265a3d1a6)
+![435754283-37843833-560e-4dfa-ad86-8f3a4d0f53b2](https://github.com/user-attachments/assets/3c7ffbef-51ed-495e-803b-1f137c32c5c2)
+![435754706-32698667-c3a1-4720-a813-56f94cf3da69](https://github.com/user-attachments/assets/c3cb3788-34f7-45ba-a318-4a51b9be027a)
+
 
 ## RESULT:
 Web browser artifacts and email headers were successfully analyzed using Wireshark.
